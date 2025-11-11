@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("metric-tool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb5ad98d38594606909b5cadc1431aeaf4f1d887")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d36ca9b9811917e4a42c3683a30d7092cd8364bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("metric-tool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("metric-tool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
