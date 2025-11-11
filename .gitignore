@@ -1,0 +1,60 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+
+# Logs
+*.log
+
+# Auto-generated files
+Generated\ Files/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Package directories
+packages/
+*.nupkg
+*.snupkg
+
+# Dotnet tools
+.dotnet-tools/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Build artifacts
+project.lock.json
+project.fragment.lock.json
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Rider IDE
+.idea/
+
+# Others
+*.swp
+*.bak
+*.orig
