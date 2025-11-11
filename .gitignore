@@ -58,3 +58,8 @@ _ReSharper*/
 *.swp
 *.bak
 *.orig
+
+# Build output
+bin/
+obj/
+
