@@ -6,7 +6,6 @@ using System.Linq;
 public class FileParser
 {
     public string? CurrentFile { get; private set; }
-
     public List<string> FilePaths { get; }
     public List<Func<string, bool>> Filters { get; }
 
@@ -16,34 +15,31 @@ public class FileParser
         Filters = filters ?? throw new ArgumentNullException(nameof(filters));
     }
 
+    // Parses all files and returns a list of documents
     public List<Document> ParseFiles()
     {
         List<Document> documents = new List<Document>();
-
         foreach (string filePath in FilePaths)
         {
             documents.Add(CreateDocument(filePath));
         }
-
         return documents;
     }
 
+    // Creates a document from a file after applying filters
     public Document CreateDocument(string filePath)
     {
         CurrentFile = filePath;
-
         List<string> lines = File.ReadLines(filePath).ToList();
-
         lines = ApplyFilters(lines);
-
         if (lines.Count == 0)
         {
             throw new ArgumentException($"The file '{filePath}' had no code in it.");
         }
-
         return new Document(lines, filePath);
     }
 
+    // Applies each filter function to the lines
     private List<string> FilterLines(List<string> lines)
     {
         foreach (var filter in Filters)
@@ -53,6 +49,7 @@ public class FileParser
         return lines;
     }
 
+    // Applies filters if any exist, otherwise returns original lines
     private List<string> ApplyFilters(List<string> lines)
     {
         return (Filters != null && Filters.Count > 0)
