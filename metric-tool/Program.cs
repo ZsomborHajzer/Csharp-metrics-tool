@@ -23,13 +23,15 @@ catch (Exception e)
     Console.WriteLine($"Error: {e.Message}");
 }
 
+var filters = StringFilters.GetFilters(StringFilters.NotEmpty, StringFilters.RemoveImports);
 
-if (!(files.Count == 0))
+FileParser parser = new FileParser(files, filters);
+
+List<Document> documents = parser.ParseFiles();
+
+foreach (var line in documents.First().DocumentLines)
 {
-    foreach (var file in files)
-    {
-        Console.WriteLine($"{file}");
-    }
+    Console.WriteLine(line);
 }
 
 
