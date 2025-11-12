@@ -12,10 +12,6 @@ public class Validator
         this.projectPath = projectPath;
     }
 
-    public Validator()
-    {
-    }
-
     private bool ValidatePath()
     {
         if (string.IsNullOrWhiteSpace(projectPath))

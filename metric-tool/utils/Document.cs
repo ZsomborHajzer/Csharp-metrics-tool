@@ -1,0 +1,1 @@
+public record Document(List<string> DocumentLines, string filePath);
