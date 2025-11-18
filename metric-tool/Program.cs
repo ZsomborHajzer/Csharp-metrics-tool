@@ -26,7 +26,8 @@ FileParser parser = new FileParser(files, filters);
 
 List<Document> documents = parser.ParseFiles();
 
-foreach (var line in documents.First().DocumentLines)
-{
-    Console.WriteLine(line);
-}
+MetricAnalyzer metricAnalyzer = new MetricAnalyzer(documents, projectPath);
+
+metricAnalyzer.AddMetric(new LinesOfCode());
+
+metricAnalyzer.RunMetrics();
