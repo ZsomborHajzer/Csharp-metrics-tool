@@ -31,3 +31,5 @@ MetricAnalyzer metricAnalyzer = new MetricAnalyzer(documents, projectPath);
 metricAnalyzer.AddMetric(new LinesOfCode());
 
 metricAnalyzer.RunMetrics();
+
+metricAnalyzer.AnalyzeClasses(files.ToArray());
