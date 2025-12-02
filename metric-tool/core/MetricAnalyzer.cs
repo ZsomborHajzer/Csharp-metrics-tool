@@ -6,7 +6,9 @@ public class MetricAnalyzer
 {
     private List<Document> _documents { get; set; }
     private string _projectPath { get; set; }
-    private List<IMetric> _metrics { get; set; } = new List<IMetric>();
+    public List<IMetric> _metrics { get; set; } = new List<IMetric>();
+
+    private List<string> _outcomes { get; set; } = new List<string>();
 
     public MetricAnalyzer(List<Document> documents, string projectPath)
     {
@@ -16,15 +18,12 @@ public class MetricAnalyzer
 
     public void RunMetrics()
     {
-        List<string> outcomes = new List<string>();
+
         foreach (var metric in _metrics)
         {
-            outcomes.Add(metric.Evaluate(_documents));
+            _outcomes.Add(metric.Evaluate(_documents));
         }
-        foreach (var outcome in outcomes)
-        {
-            Console.WriteLine(outcome);
-        }
+
     }
 
     public void AddMetric(IMetric metric)
@@ -113,39 +112,33 @@ public class MetricAnalyzer
             }
         }
 
-        List<string> outcomes = new List<string>();
-
         int totalClasses = allClasses.Count;
-        outcomes.Add($"Total Classes: {totalClasses}");
+        _outcomes.Add($"Total Classes: {totalClasses}");
 
         double avgDependencies = allClasses.Count > 0
             ? allClasses.Values.Average(c => c.Dependencies.Count)
             : 0;
-        outcomes.Add($"Average Dependencies per Class: {avgDependencies:F2}");
+        _outcomes.Add($"Average Dependencies per Class: {avgDependencies:F2}");
 
         int maxDependencies = allClasses.Count > 0
             ? allClasses.Values.Max(c => c.Dependencies.Count)
             : 0;
-        outcomes.Add($"Maximum Dependencies: {maxDependencies}");
+        _outcomes.Add($"Maximum Dependencies: {maxDependencies}");
 
         int minDependencies = allClasses.Count > 0
             ? allClasses.Values.Min(c => c.Dependencies.Count)
             : 0;
-        outcomes.Add($"Minimum Dependencies: {minDependencies}");
+        _outcomes.Add($"Minimum Dependencies: {minDependencies}");
 
         int classesWithInheritance = allClasses.Values.Count(c => c.BaseClass != null);
-        outcomes.Add($"Classes with Inheritance: {classesWithInheritance}");
+        _outcomes.Add($"Classes with Inheritance: {classesWithInheritance}");
 
         int classesWithNoDependencies = allClasses.Values.Count(c => c.Dependencies.Count == 0);
-        outcomes.Add($"Classes with No Dependencies: {classesWithNoDependencies}");
+        _outcomes.Add($"Classes with No Dependencies: {classesWithNoDependencies}");
 
         int highCouplingClasses = allClasses.Values.Count(c => c.Dependencies.Count > 5);
-        outcomes.Add($"Classes with High Coupling (>5 dependencies): {highCouplingClasses}");
+        _outcomes.Add($"Classes with High Coupling (>5 dependencies): {highCouplingClasses}");
 
-        foreach (var outcome in outcomes)
-        {
-            Console.WriteLine(outcome);
-        }
     }
 
     private void AddDependency(ClassInfo info, string typeName)
@@ -162,5 +155,18 @@ public class MetricAnalyzer
         {
             info.Dependencies.Add(typeName);
         }
+    }
+
+    public bool Clear()
+    {
+        this._documents.Clear();
+        this._outcomes.Clear();
+
+        return true;
+    }
+
+    public List<string> GetOutcomes()
+    {
+        return _outcomes;
     }
 }
