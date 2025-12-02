@@ -42,6 +42,10 @@ foreach (var path in ProjectPaths)
 
     metricAnalyzer.AddMetric(new LinesOfCode());
 
+    metricAnalyzer.AddMetric(new CyclomaticComplexity());
+
+    metricAnalyzer.AddMetric(new HalsteadEffort());
+
     metricAnalyzer.RunMetrics();
 
     metricAnalyzer.AnalyzeClasses(files.ToArray());
