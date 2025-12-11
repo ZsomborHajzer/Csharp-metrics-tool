@@ -31,12 +31,13 @@ public class FileParser
     {
         CurrentFile = filePath;
         List<string> lines = File.ReadLines(filePath).ToList();
+        var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(filePath));
         lines = ApplyFilters(lines);
         if (lines.Count == 0)
         {
             throw new ArgumentException($"The file '{filePath}' had no code in it.");
         }
-        return new Document(lines, filePath);
+            return new Document(lines, tree, filePath);
     }
 
     // Applies each filter function to the lines

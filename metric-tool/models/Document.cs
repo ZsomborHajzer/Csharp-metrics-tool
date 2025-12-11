@@ -1,1 +1,1 @@
-public record Document(List<string> DocumentLines, string filePath);
+public record Document(List<string> DocumentLines, Microsoft.CodeAnalysis.SyntaxTree SyntaxTree, string filePath);

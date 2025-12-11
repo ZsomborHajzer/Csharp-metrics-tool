@@ -1,8 +1,9 @@
-﻿using System.Reflection.Metadata;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
-//Definitely not perfect yet, only rough approximation
-//Actually really bad, don't use, found possibly better method will discuss in meeting
+//Redone, now with Syntax Tree :D
 public class CyclomaticComplexity : IMetric
 {
 
@@ -13,20 +14,35 @@ public class CyclomaticComplexity : IMetric
 
     private string Implementation(List<Document> docs)
     {
-        int decisionPointsCount = 1;
-
+        int SumCC = 0;
+        int MaxCC = 0;
+        string MaxDoc = "non existent";
+        int AvgCC = 0;
         foreach (var doc in docs)
         {
-            foreach (var line in doc.DocumentLines)
+            var root = doc.SyntaxTree.GetRoot();
+            var cc =
+            1
+            + root.DescendantNodes().OfType<IfStatementSyntax>().Count()
+            + root.DescendantNodes().OfType<ForStatementSyntax>().Count()
+            + root.DescendantNodes().OfType<ForEachStatementSyntax>().Count()
+            + root.DescendantNodes().OfType<WhileStatementSyntax>().Count()
+            + root.DescendantNodes().OfType<DoStatementSyntax>().Count()
+            + root.DescendantNodes().OfType<SwitchSectionSyntax>().Sum(sec => sec.Labels.Count - 1)
+            + root.DescendantNodes().OfType<BinaryExpressionSyntax>().Count(n => n.Kind() == SyntaxKind.LogicalAndExpression || n.Kind() == SyntaxKind.LogicalOrExpression)
+            + root.DescendantNodes().OfType<ConditionalExpressionSyntax>().Count()
+            + root.DescendantNodes().OfType<CatchClauseSyntax>().Count()
+            + root.DescendantNodes().OfType<SwitchExpressionArmSyntax>().Count();
+            SumCC += cc;
+            if (cc > MaxCC)
             {
-                string[] subs = Regex.Split(line, @"[{}\(\)/\s]+");
-                var keywordCount = subs.Count(x => x == "if" || x == "else" || x == "for" || x == "while" || x == "foreach");
-                var operatorCount = Regex.Matches(line, @"&&|\|\||(\?<![a-zA-Z0-9_])|:").Count;
-                decisionPointsCount += keywordCount + operatorCount;
+                MaxCC = cc;
+                MaxDoc = doc.filePath;
             }
         }
+        AvgCC = SumCC / docs.Count();
 
-         return $"CC = {decisionPointsCount}";
+        return $"Sum of all cyclomatic complexity = {SumCC} \nDocument with highest cyclomatic complexity is {MaxDoc} = {MaxCC} \nAverage cyclomatic complexity = {AvgCC}";
     }
 }
 

@@ -42,7 +42,17 @@ foreach (var path in ProjectPaths)
 
     metricAnalyzer.AddMetric(new LinesOfCode());
 
+    metricAnalyzer.AddMetric(new AsyncAwaitCounter());
+
+    metricAnalyzer.AddMetric(new KeywordDensity());
+
+    metricAnalyzer.AddMetric(new LambdaFunctionCounter());
+
     metricAnalyzer.AddMetric(new CyclomaticComplexity());
+
+    metricAnalyzer.AddMetric(new ParameterPerFunctionViolation());
+
+    metricAnalyzer.AddMetric(new NestingDepth());
 
     metricAnalyzer.AddMetric(new HalsteadEffort());
 
